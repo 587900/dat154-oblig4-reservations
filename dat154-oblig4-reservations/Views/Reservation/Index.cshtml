@@ -1,0 +1,98 @@
+﻿@using static dat154_oblig4_reservations.Controllers.ReservationController
+
+@{
+    ViewData["Title"] = "Reserver et rom";
+    IEnumerable<RoomViewModel> data = (IEnumerable<RoomViewModel>)ViewData["Data"]!;
+    bool includeReserve = ViewData["From"] != null && ViewData["To"] != null;
+}
+<center>
+    <h1>Reserver et rom</h1>
+    <p>Velg dato for å kunne reservere</p>
+</center>
+<form>
+    <center>
+        <input type="submit" value="Søk" />
+
+        <br />
+        <div style="height: 5px; content: ''"></div>
+
+        <label>Fra: </label> <input name="from" type="date" placeholder="From" value="@ViewData["From"]" />
+        <label>Til: </label> <input name="to" type="date" placeholder="To" value="@ViewData["To"]" />
+
+        <br />
+        <div style="height: 5px; content: ''"></div>
+
+        <table>
+            <tr>
+                <td>
+                    <input name="beds" type="number" placeholder="Senger" value="@ViewData["Beds"]" />
+                </td>
+                <td>
+                    <input name="size" type="text" placeholder="Størrelse" value="@ViewData["Size"]" />
+                </td>
+                <td>
+                    <input name="quality" type="text" placeholder="Kvalitet" value="@ViewData["Quality"]" />
+                </td>
+            </tr>
+        </table>
+    </center>
+</form>
+
+@if (data.Count() == 0)
+{
+    <p>Vi fant ingen rom</p>
+} else
+{
+    <table class="full-table">
+        @if (includeReserve)
+        {
+            @RenderHeader(true)
+            <form method="post">
+                <input name="from" type="hidden" value="@ViewData["From"]" />
+                <input name="to" type="hidden" value="@ViewData["To"]" />
+                @RenderRooms(data, true)
+            </form>
+        } else
+        {
+            @RenderHeader(false)
+            @RenderRooms(data, false)
+        }
+    </table>
+}
+
+@{
+    object RenderHeader(bool includeReserve)
+    {
+        <thead>
+            <tr>
+                <th>Romnummer</th>
+                <th>Senger</th>
+                <th>Størrelse</th>
+                <th>Kvalitet</th>
+                @if (includeReserve)
+                {
+                    <th>Reserver</th>
+                }
+            </tr>
+        </thead>
+        return "";
+    }
+
+    object RenderRooms(IEnumerable<RoomViewModel> data, bool includeReserve)
+    {
+        @foreach (RoomViewModel entry in data)
+        {
+            <tr>
+                <td>@entry.RoomNumber</td>
+                <td>@entry.Beds</td>
+                <td>@entry.Size</td>
+                <td>@entry.Quality</td>
+                @if (includeReserve)
+                {
+                    <td><button name="id" value="@entry.Id" type="submit">Reserver</button></td>
+                }
+            </tr>
+        }
+        return "";
+    }
+ }

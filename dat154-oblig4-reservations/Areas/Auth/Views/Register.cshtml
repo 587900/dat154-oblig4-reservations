@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Registrer bruker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Registrer ny bruker</h1>
+@if (ViewData["Error"] != null) { <p>@PrettifyError(ViewData["Error"]!, ViewData["ErrorUsername"])</p> }
+<form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+    <input name="username" type="text" placeholder="Brukernavn"/>
+    <input name="password" type="password" placeholder="Passord" />
+    <input name="name" type="text" placeholder="Navn" />
+    <input type="submit" />
+</form>
+
+@functions {
+    public string PrettifyError(object _error, object? _username)
+    {
+        if (!(_error is string) || !(_username is string)) return "Unknown error format";
+        
+        string error = (string)_error;
+        string username = (string)_username;
+
+        switch(error)
+        {
+            case "UserExists": return "Brukeren '" + username + "' finnest allerede";
+            default: return error;
+        }
+    }
+}

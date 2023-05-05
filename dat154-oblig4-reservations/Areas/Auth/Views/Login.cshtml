@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Logg inn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Login</h1>
+@if (ViewData["Error"] != null) { <p>@PrettifyError(ViewData["Error"]!)</p> }
+<form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+    <input name="username" type="text" placeholder="Brukernavn"/>
+    <input name="password" type="password" placeholder="Passord" />
+    <input type="submit" />
+</form>
+
+@functions {
+    public string PrettifyError(object _error)
+    {
+        if (!(_error is string)) return "Unknown error format";
+
+        string error = (string)_error;
+
+        switch (error)
+        {
+            case "WrongCredentials": return "Feil brukernavn eller passord";
+            default: return error;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+﻿@using static dat154_oblig4_reservations.Controllers.ReservationController
+
+@{
+    ViewData["Title"] = "Mine reservasjoner";
+    IEnumerable<ReservationViewModel> data = (IEnumerable<ReservationViewModel>)ViewData["Data"]!;
+}
+
+<h1>Dine reservasjoner</h1>
+@if (data.Count() == 0)
+{
+    <p>Du har ingen reservasjoner</p>
+} else
+{
+    <table class="full-table">
+        <thead>
+            <tr>
+                <th>Romnummer</th>
+                <th>Fra</th>
+                <th>Til</th>
+                <th>Senger</th>
+                <th>Størrelse</th>
+                <th>Kvalitet</th>
+                <th>Slett</th>
+            </tr>
+        </thead>
+        <form method="post" asp-action="DeleteReservation">
+            @foreach (ReservationViewModel entry in data)
+            {
+            <tr>
+                <td>@entry.RoomNumber</td>
+                <td>@entry.From</td>
+                <td>@entry.To</td>
+                <td>@entry.Beds</td>
+                <td>@entry.Size</td>
+                <td>@entry.Quality</td>
+                <td><button name="id" value="@entry.Id" type="submit">Slett</button></td>
+            </tr>
+            }
+        </form>
+    </table>
+}

@@ -1,0 +1,49 @@
+﻿@using static dat154_oblig4_reservations.Controllers.ReservationController
+
+@{
+    ViewData["Title"] = "Admin: Alle reservasjoner";
+    IEnumerable<WholeReservationViewModel> data = (IEnumerable<WholeReservationViewModel>)ViewData["Data"]!;
+}
+
+@if (ViewData["Admin"] == null || ViewData["Admin"]!.ToString() != "True")
+{
+    <h1>Du har ikke tilgang til denne siden</h1>
+    return;
+}
+
+<h1>Admin-panel: Reservasjoner</h1>
+@if (data.Count() == 0)
+{
+    <p>Ingen reservasjoner i systemet</p>
+} else
+{
+    <table class="full-table">
+        <thead>
+            <tr>
+                <th>Romnummer</th>
+                <th>Brukernavn</th>
+                <th>Fra</th>
+                <th>Til</th>
+                <th>Senger</th>
+                <th>Størrelse</th>
+                <th>Kvalitet</th>
+                <th>Slett</th>
+            </tr>
+        </thead>
+        <form method="post" asp-action="DeleteReservationAsAdmin">
+            @foreach (WholeReservationViewModel entry in data)
+            {
+            <tr>
+                <td>@entry.RoomNumber</td>
+                <td>@entry.Username</td>
+                <td>@entry.From</td>
+                <td>@entry.To</td>
+                <td>@entry.Beds</td>
+                <td>@entry.Size</td>
+                <td>@entry.Quality</td>
+                <td><button name="id" value="@entry.Id" type="submit">Slett</button></td>
+            </tr>
+            }
+        </form>
+    </table>
+}

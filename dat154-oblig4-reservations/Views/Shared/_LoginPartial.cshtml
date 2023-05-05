@@ -1,0 +1,43 @@
+﻿@using dat154_oblig4_reservations.Data;
+@inject LoginManager LoginManager
+@inject IHttpContextAccessor Accessor
+
+<ul class="navbar-nav">
+    @if (LoginManager.IsLoggedIn(Accessor.HttpContext!.Session))
+    {
+        @if (LoginManager.IsLoggedInAsAdmin(Accessor.HttpContext.Session))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Reservation" asp-action="AllReservations">Alle reservasjoner</a>
+            </li>
+        }
+        <li class="nav-item">
+            <div class="nav-link" style="border: 1px solid transparent">Velkommen, @GetDisplayName()!</div>
+        </li>
+        <li class="nav-item">
+            <form method="post" class="form-inline" asp-area="Auth" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@GetProperReturnUrl()">
+                <button  type="submit" class="nav-link btn btn-link text-dark">Logg ut</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Auth" asp-controller="Account" asp-action="Register" asp-route-returnurl="@GetProperReturnUrl()">Registrer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Auth" asp-controller="Account" asp-action="Login" asp-route-returnurl="@GetProperReturnUrl()">Logg inn</a>
+        </li>
+    }
+</ul>
+
+@functions {
+    public string GetProperReturnUrl()
+    {
+        string result = Context.Request.Query["returnurl"].ToString();
+        if (result == "") result = Context.Request.Path;
+        return result;
+    }
+
+    public string GetDisplayName() { return LoginManager.GetLoggedInDisplayName(Accessor.HttpContext!.Session) ?? "";  }
+}

@@ -1,0 +1,52 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/*.full-table {
+    width: 100%;
+}*/
+.full-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.full-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.full-table th,
+.full-table td {
+    padding: 12px 15px;
+}
+.full-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.full-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.full-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.full-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
